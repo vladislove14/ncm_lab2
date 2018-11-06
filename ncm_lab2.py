@@ -108,6 +108,28 @@ def output(s):
     with open("outputs.txt","w") as out_file:
         out_file.write(s)
 
+
+
+def bilin_form(x,y):
+    res=0
+    for i in range(x.shape[0]):
+        res+=x[i,0]*y[i,0]
+    return res
+
+def scalar_products(A):
+    if (A != A.T).any():
+        raise ValueError
+    y = np.matrix(np.ones([A.shape[1],1]))
+    mu=1
+    mu0=0
+    eps = 10 ** (-4)
+    while abs(mu-mu0) >= eps:
+        e = y/y.max()
+        y = A*e
+        mu0 = mu
+        mu = bilin_form(y,e)/bilin_form(e,e)
+    return mu
+
 Ab = []
 A=[]
 B=[]
@@ -128,11 +150,12 @@ ab = np.matrix(Ab)
 a = np.matrix(A)
 b = np.matrix(B)
 out = ""
-er1 = "Method squad roots:\nError!\nMatrix must be symmetrical\n\n"
+er1 = "Method of squad roots:\nError!\nMatrix must be symmetrical\n\n"
 er2 = "Method Jacobi:\nError!\nThe condition of diagonal superiority isn`t fulfilled\n\n"
+er3 = "Method of scalar products:\nError!\nMatrix must be symmetrical\n\n"
 try:
     res = square_roots(a, b)
-    out += "Method squad roots:\nx={0}\n\ndetA= {1}\n\n".format(matrix_toFixed(res[0], 4), toFixed(res[1], 4))
+    out += "Method of squad roots:\nx={0}\n\ndetA= {1}\n\n".format(matrix_toFixed(res[0], 4), toFixed(res[1], 4))
 except(ValueError):
     out += er1
 try:
@@ -140,6 +163,12 @@ try:
     out += "Method Jacobi:\nx={0}\n\n".format(matrix_toFixed(res2, 4))
 except(TypeError):
     out += er2
+try:
+    lambda_max = scalar_products(a)
+    lambda_min = matrix_rate(a) - scalar_products(matrix_rate(a) * np.eye(a.shape[0]) - a)
+    out+= "Method of scalar products:\nlambda_max= {0}\nlambda_min= {1}\n\n".format(toFixed(lambda_max,4),toFixed(lambda_min,4))
+except(ValueError):
+    out+=er3
 finally:
     out += "cond(A)= {0}".format(toFixed(cond(a), 4))
     output(out)
