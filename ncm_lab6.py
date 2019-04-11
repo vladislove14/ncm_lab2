@@ -27,9 +27,8 @@ def rynhe(a, b):
     h = 1/2 * (b-a)/N
     while abs(r(h, a, b)) >= eps:
         h /= 2
-       # print(abs(r(h, a, b)))
     return h
 
 
-#s = rynhe(a,b)
-#print("Крок h = {0}\nЗначення інтегралу: I = {1}".format(s,integral(f, s, a, b)+I1))
+s = rynhe(a,b)
+print("Крок h = {0}\nЗначення інтегралу: I = {1}".format(s,integral(f, s, a, b)+I1))
