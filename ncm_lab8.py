@@ -130,7 +130,7 @@ sys2 = getSystem2()
 vC1 = sys1[0].I*sys1[1]
 vC2 = sr(sys2[0], sys2[1])[0]
 plt.plot(x_, u_n(x_, vC1), label = 'м. Колокацій', linestyle = ':', linewidth = 2.0)
-#plt.plot(x_, u_n(x_, vC2), label = 'м. Рітца', linestyle = '-.', color = 'red')
+plt.plot(x_, u_n(x_, vC2), label = 'м. Рітца', linestyle = '-.', color = 'red')
 plt.plot(x_, u(x_), label = 'u(x)', color = 'black', linewidth = 1.0, alpha = 0.9)
 plt.grid()
 plt.legend()
